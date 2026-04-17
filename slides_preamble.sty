@@ -1,0 +1,110 @@
+\newcommand{\backupbegin}{
+   \newcounter{finalframe}
+   \setcounter{finalframe}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+   \setcounter{framenumber}{\value{finalframe}}
+}
+
+\newcommand<>{\uncovergraphics}[2][{}]{
+    % Taken from: <https://tex.stackexchange.com/a/354033/95423>
+    \begin{tikzpicture}
+    \node[anchor=south west,inner sep=0] (B) at (4,0)
+        {\includegraphics[#1]{#2}};
+    \alt#3{}{%
+        \fill [draw=none, fill=background, fill opacity=0.9] (B.north west) -- (B.north east) -- (B.south east) -- (B.south west) -- (B.north west) -- cycle;
+    }
+    \end{tikzpicture}
+}
+
+\newcommand\marktopleft[1]{%
+    \tikz[overlay,remember picture] 
+        \node (marker-#1-a) at (.1em,.3em) {};%
+}
+\newcommand\markbottomright[1]{%
+    \tikz[overlay,remember picture] 
+        \node (marker-#1-b) at (.1em,.3em) {};%
+    \tikz[overlay,remember picture,inner sep=3pt]
+        \node[draw=red,rounded corners,fit=(marker-#1-a.north west) (marker-#1-b.south east)] {};%
+}
+
+
+\usepackage[beamer,customcolors]{hf-tikz}
+\tikzset{hl/.style={
+    set fill color=red!80!black!40,
+    set border color=red!80!black,
+  },
+}
+
+\usepackage{booktabs}
+\usetikzlibrary{tikzmark, positioning, fit,arrows,shapes}
+\usetikzlibrary{shapes.callouts,shadows.blur,positioning}
+\usetikzlibrary{overlay-beamer-styles}
+\setbeamercolor{alerted text}{fg=blue}
+\newcommand{\tikznode}[2]{\relax
+\ifmmode%
+  \tikz[remember picture,baseline=(#1.base),inner sep=0pt] \node (#1) {$#2$};
+\else
+  \tikz[remember picture,baseline=(#1.base),inner sep=0pt] \node (#1) {#2};%
+\fi}
+
+\usepackage[longnamesfirst]{natbib}
+\usepackage{fixpauseincludegraphics}
+\setbeamercovered{transparent}
+\usepackage{pgfpages}
+\setbeameroption{hide notes} % Only slides
+%\setbeameroption{show only notes} % Only notes
+%\setbeameroption{show notes on second screen=right} % Both
+
+\setbeamerfont{note page}{size=\footnotesize}
+%\setbeamerfont{note page}{size=\scriptsize}
+
+\setbeamertemplate{note page}{\pagecolor{yellow!5}\insertnote}\usepackage{palatino}
+\usepackage{arydshln}
+
+\usepackage{multirow}
+%\usepackage{subcaption}
+%\usepackage{subfig}
+\usepackage{hyperref}
+
+
+\AtBeginSection[]{
+  \begin{frame}[noframenumbering]
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+
+% If you want to print handouts
+%\documentclass[handout]{beamer}
+
+% Changing the fonts: this will make the slides more readable and the math look like regular tex math
+\usefonttheme{serif}
+
+% Titles will appear in Small Cap Serif
+%\usefonttheme{structuresmallcapsserif}
+
+% -----------------------------------------
+% Center the Frame Title
+% -----------------------------------------
+
+\setbeamertemplate{frametitle} {
+\begin{centering}
+\vspace{0.1in} \insertframetitle
+\par
+\end{centering}}
+
+% -----------------------------------------
+% Number the slides
+% -----------------------------------------
+\setbeamertemplate{footline}[frame number]
+
+% -----------------------------------------
+% Get rid of the irritating navigation bar
+% -----------------------------------------
+\setbeamertemplate{navigation symbols}{}

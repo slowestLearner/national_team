@@ -1,0 +1,231 @@
+
+% DEFAULT PACKAGE SETUP
+\usepackage{setspace,graphicx,epstopdf,amsmath,amsfonts,amssymb,amsthm,versionPO,threeparttable}
+\usepackage{marginnote,datetime,enumitem,subfig,rotating,fancyvrb,tabularx,booktabs}
+\usepackage{float}
+% \usepackage[longnamesfirst]{natbib}
+\usepackage[]{natbib}
+\newcolumntype{Y}{>{\raggedleft\arraybackslash}X}% raggedleft column X
+\interfootnotelinepenalty=10000 %% Completely prevent breaking of footnotes
+
+% Define \numberthis
+\newcommand{\numberthis}{\addtocounter{equation}{1}\tag{\theequation}}
+
+\usdate
+\usepackage{lscape}
+% \usepackage{endfloat}
+% \usepackage[nolists]{endfloat}
+\usepackage{rotating} 
+
+\usepackage[justification=justified]{caption}
+% \usepackage{subcaption}
+% These next lines allow including or excluding different versions of text
+% using versionPO.sty
+
+\excludeversion{notes}  % Include notes?
+\includeversion{links}  % Turn hyperlinks on?
+
+\usepackage{eurosym}
+% Turn off hyperlinking if links is excluded
+\iflinks{}{\hypersetup{draft=true}}
+
+% Notes options
+\ifnotes{%
+ \usepackage[margin=1in,paperwidth=10in,right=2.5in]{geometry}%
+ \usepackage[textwidth=1.4in,shadow,colorinlistoftodos]{todonotes}%
+}{%
+ \usepackage[margin=1in]{geometry}%
+ \usepackage[disable]{todonotes}%
+}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+
+% Allow todonotes inside footnotes without blowing up LaTeX
+% Next command works but now notes can overlap. Instead, we'll define
+% a special footnote note command that performs this redefinition.
+% \renewcommand{\marginpar}{\marginnote}%
+
+% Save original definition of \marginpar
+\let\oldmarginpar\marginpar
+
+% Workaround for todonotes problem with natbib (To Do list title comes out wrong)
+\makeatletter\let\chapter\@undefined\makeatother % Undefine \chapter for todonotes
+
+% Define note commands
+\newcommand{\smalltodo}[2][] {\todo[caption={#2}, size=\scriptsize, fancyline, #1] {\begin{spacing}{.5}#2\end{spacing}}}
+\newcommand{\rhs}[2][]{\smalltodo[color=green!30,#1]{{\bf RS:} #2}}
+\newcommand{\rhsnolist}[2][]{\smalltodo[nolist,color=green!30,#1]{{\bf RS:} #2}}
+\newcommand{\rhsfn}[2][]{% To be used in footnotes (and in floats)
+ \renewcommand{\marginpar}{\marginnote}%
+ \smalltodo[color=green!30,#1]{{\bf RS:} #2}%
+ \renewcommand{\marginpar}{\oldmarginpar}}
+% \newcommand{\textnote}[1]{\ifnotes{{\noindent\color{red}#1}}{}}
+\newcommand{\textnote}[1]{\ifnotes{{\colorbox{yellow}{{\color{red}#1}}}}{}}
+
+% Command to start a new page, starting on odd-numbered page if twoside option
+% is selected above
+\newcommand{\clearRHS}{\clearpage\thispagestyle{empty}\cleardoublepage\thispagestyle{plain}}
+
+% Number paragraphs and subparagraphs and include them in TOC
+\setcounter{tocdepth}{2}
+
+% JF-specific includes:
+
+\usepackage{indentfirst} % Indent first sentence of a new section.
+\usepackage{endnotes} % Use endnotes instead of footnotes
+\usepackage{rfs}  % JF-specific formatting of sections, etc.
+% \usepackage[labelfont=bf,labelsep=period]{caption} % Format figure captions
+\captionsetup[table]{labelsep=none}
+
+\usepackage{color}%Color
+% Define theorem-like commands and a few random function names.
+\newtheorem{condition}{CONDITION}
+\newtheorem{corollary}{COROLLARY}
+\newtheorem{proposition}{PROPOSITION}
+\newtheorem{obs}{OBSERVATION}
+\newtheorem{lem}{LEMMA}
+\newtheorem{theorem}{THEOREM}
+\newtheorem{assumption}{ASSUMPTION}
+\newcommand{\argmax}{\mathop{\rm arg\,max}}
+\newcommand{\sign}{\mathop{\rm sign}}
+\newcommand{\defeq}{\stackrel{\rm def}{=}}
+
+\usepackage{multirow}
+\usepackage{booktabs}
+
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{relsize}
+\usepackage{tikz}
+\usepackage{pgfplotstable} 
+\usepgfplotslibrary{dateplot}
+\usetikzlibrary{fit}
+\usepackage{graphicx}
+\usepackage{eurosym}
+\usepackage{standalone}
+% \usepackage{filecontents}
+
+\usepackage[section]{placeins} % keep figures in the same section
+
+
+\usepackage{appendix}
+\appendixtitleon
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+%\onehalfspacing
+%\linespread{1.25}
+
+\setstretch{1.5}
+%\doublespacing
+
+\definecolor{zahi}{RGB}{255,0,0}
+\newcommand{\zahi}[1]{\textcolor{zahi}{[zahi: #1]}}
+
+
+
+%%%%% Pgfplots %%%%%
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+
+\pgfplotsset{compat=newest}
+\usetikzlibrary{patterns}
+
+%%%% Table caption package %%%%%
+\usepackage{ragged2e}
+\usepackage{longtable}
+
+%%%% Figure imports %%%%
+\usepackage{import}
+
+%%%% Color cells in tables %%%%
+\usepackage{tabulary,colortbl}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+
+\definecolor{andrea}{RGB}{255,0,0}
+\newcommand{\andrea}[1]{\textcolor{andrea}{[andrea: #1]}}
+
+\definecolor{yang}{RGB}{255,0,0}
+\newcommand{\yang}[1]{\textcolor{yang}{[yang: #1]}}
+\newcommand{\jay}[1]{\textcolor{yang}{[j: #1]}}
+
+
+\usepackage[colorlinks=true,linkcolor=red,anchorcolor=black,citecolor=black, filecolor=black,menucolor=black,runcolor=black,urlcolor=black]{hyperref}
+\usepackage{parskip}
+
+
+
+%%%%%%%%%%%%%%%%% For plots: get min, max etc
+
+
+\newcommand*{\GetElement}[4]{%
+    \pgfplotstablegetelem{#2}{#3}\of{#1}%
+    \let#4\pgfplotsretval
+}
+
+% get the first element of a column and store it in a macro
+% #1: table
+% #2: column (name or [index]<index>)
+% #3: macro for value
+\newcommand*{\GetFirstElement}[3]{%
+    \GetElement{#1}{0}{#2}{#3}%
+}
+
+% get the last element of a column and store it in a macro
+% #1: table
+% #2: column (name or [index]<index>)
+% #3: macro for value
+\newcommand*{\GetLastElement}[3]{%
+    \pgfplotstablegetrowsof{#1}%
+    \pgfmathsetmacro\lastrowidx{int(\pgfplotsretval - 1)}%
+    \GetElement{#1}{\lastrowidx}{#2}{#3}%
+}
+
+% get maximum and minimum value of a column and store them in macros
+% #1: table
+% #2: column
+% #3: macro for max
+% #4: macro for min
+\newcommand*{\GetMinMax}[4]{%
+    \pgfmathsetmacro#3{-16383}%
+    \pgfmathsetmacro#4{16383}%
+    \pgfplotstableforeachcolumnelement{#2}\of{#1}\as\cellValue{%
+        \ifx\cellValue\@empty\else
+            \pgfmathsetmacro{#3}{max(#3,\cellValue)}%
+            \pgfmathsetmacro{#4}{min(#4,\cellValue)}%
+        \fi
+    }
+}
+
+% get average of column and store it in a macro
+% #1: table
+% #2: column
+% #3: macro for average
+\newcommand*{\GetAverage}[3]{%
+    \pgfplotstablegetrowsof{#1}%
+    \let\rownumber\pgfplotsretval
+    \def#3{0}%
+    \pgfplotstableforeachcolumnelement{#2}\of{#1}\as\cellValue{%
+        \ifx\cellValue\@empty
+            % don't count emplty cells
+            \pgfmathsetmacro{\rownumber}{\rownumber - 1}%
+        \else
+            \pgfmathsetmacro{#3}{#3 + \cellValue}%
+        \fi
+    }
+    \pgfmathsetmacro{#3}{#3 / \rownumber}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%% Quintile colors (Green to Red) %%%% 
+\definecolor{q1}{rgb}{ .973,  .412,  .42}
+\definecolor{q2}{rgb}{ .992,  .749,  .486}
+\definecolor{q3}{rgb}{ 1,  .922,  .518}
+\definecolor{q4}{rgb}{ .678,  .827,  .498}
+\definecolor{q5}{rgb}{ .388,  .745,  .482}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

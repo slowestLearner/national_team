@@ -1,0 +1,777 @@
+\documentclass[12pt]{article}
+\input{preamble_paper}
+
+% optional: end floats
+\usepackage[nolists]{endfloat}
+
+\begin{document}
+\setlist{noitemsep}  % Reduce space between list items (itemize, enumerate, etc.)
+\onehalfspacing      % Use 1.5 spacing
+\renewcommand{\thempfootnote}{\fnsymbol{mpfootnote}}
+
+
+\vspace{1.5cm}
+ \author{
+% {\large Jiacui Li\hspace{0.00in}}
+ }
+
+\title{\vspace*{0.0in}\Large \bf 
+Considerations in government intervention in stock markets
+% \thanks{\rm  Li (\url{jiacui.li@eccles.utah.edu}) is at David Eccles School of Business, University of Utah. }
+}
+
+% \vspace{0.2cm}
+
+\date{\today}              % No date for final submission
+
+% Create title page with no page number
+
+\maketitle
+
+
+\thispagestyle{empty}
+\onehalfspacing
+\centerline{\bf ABSTRACT}
+
+\noindent I extended the \citet{brunnermeier2022china} (BSX) framework to incorporate two government policy tools: (1) direct trading against noise traders, and (2) adjusting financing conditions to influence investor demand. It also models transparency through a noisy public signal about future government interventions.
+
+
+
+Here are the key conclusions:
+\begin{itemize}
+    \item Greater transparency unambiguously reduces return volatility, but it lowers government trading profits because investors front-run anticipated interventions.
+
+    \item In the model, direct intervention and financing policy are equally effective in stabilizing prices. Their real-world differences stem from government costs, with financing policy being ``cheaper'' (does not require fiscal outlays). 
+\end{itemize}
+
+\medskip
+
+\vspace{0.1cm}
+
+% \noindent \textit{JEL classification:} G11, G12, G14\\
+% \noindent \textit{Keywords:} Lead-Lag, Cross-Stock Momentum, Factor Momentum, Reversal, Underreaction
+
+\thispagestyle{empty}
+
+
+\setcounter{page}{1}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Discussions}
+
+Information. 
+Transparency/releases. 
+Commitment. 
+How to intervene. 
+
+\newpage
+\section{Model}
+
+\subsection{Set up}
+
+Time is discrete, \(t = 0,1,2,\dots\).
+
+\paragraph{Assets.}
+There is a risky asset with one share outstanding. Dividends follow
+\begin{align*}
+    D_t & = V_t + \sigma_D \epsilon_t^D, \qquad \epsilon_t^D \stackrel{\text{i.i.d.}}{\sim} N(0,1),
+\end{align*}
+where the fundamental component \(V_t\) is persistent:
+\begin{align*}
+    V_t & = \rho_V V_{t-1} + \sigma_V \epsilon_t^V, \qquad \epsilon_t^V \stackrel{\text{i.i.d.}}{\sim} N(0,1).
+\end{align*}
+
+The risk‑free rate \(R_f > 1\) is set exogenously. The excess return on one share of the risky asset is
+\begin{align}
+    R_{t+1} & = D_{t+1} + P_{t+1} - R_f P_t . \label{excess_return}
+\end{align}
+
+
+\paragraph{Financing cost.}
+Investors (introduced below) incur a per‑share holding cost \(\phi_t\).  
+Thus the net excess return from holding one share is \(R_{t+1} - \phi_t\).  
+The cost \(\phi_t\) can be interpreted as a reduced‑form way of capturing leverage or margin‑financing costs.\footnote{A more serious model of margin constraints will likely break the linear‑Gaussian structure of this class of models.}
+
+\paragraph{Agents.}
+
+\begin{itemize}
+\item \underline{Noise traders.}
+Noise traders submit net purchases
+\[
+N_t = \sigma_N \epsilon_t^N, \qquad \epsilon_t^N \stackrel{\text{i.i.d.}}{\sim} N(0,1).
+\]
+
+\item \underline{Investors.}
+A unit‑mass continuum of myopic investors have constant absolute risk aversion (CARA) utility with absolute risk aversion \(\gamma\). Before submitting orders at time $t$, their information set is  
+\[
+\mathcal{F}_t = \{\, V_{s+1}, N_s, D_s, \phi_t \,\}_{s \le t}.
+\]  
+Because they incur the per‑share holding cost \(\phi_t\), their demand for the risky asset is
+\begin{align}
+    X_t^I = \frac{E_t(R_{t+1}) - \phi_t}{\gamma \,\mathrm{Var}_t(R_{t+1})}. \label{demand_with_phi}
+\end{align}
+\end{itemize}
+
+\paragraph{Government.}
+Following BSX, the government aims to reduce return volatility by leaning against noise traders. It observes \(N_t\) with noise:\footnote{In BSX's specification, the noise in the government's signal has the same standard deviation as \(N_t\) (\(\sigma_N\)). This normalization reduces the number of free parameters; I think the qualitative insights would carry over if the noise were parameterized separately, e.g., as \(\sigma_G\).}
+\begin{align}
+    \hat{N}_t^G = N_t - \sigma_N G_t, \qquad G_t \stackrel{\text{i.i.d.}}{\sim} N(0,1). \label{govt_noisy_signal}
+\end{align}
+
+
+The government has two policy instruments:
+
+\begin{itemize}
+    \item \underline{Direct trading.} The government submits the order
+    \begin{align}
+        X_t^G = - \underbrace{\theta_X}_{\text{intensity}} \cdot \underbrace{\bigl(N_t - \sigma_N G_t\bigr)}_{\hat{N}_t^G}. \label{govt_demand}
+    \end{align}
+
+    \item \underline{Adjusting financing cost.} The government can set the per‑share holding cost \(\phi_t\) faced by investors. Lowering (raising) \(\phi_t\) encourages (discourages) investor demand. The policy rule is~\footnote{Setting \(\mathbb{E}[\phi_t]=0\) is essentially without loss of generality: a constant positive mean for \(\phi_t\) would act like an increase in the effective risk‑free rate \(R_f\).}
+    \begin{align}
+        \phi_t = \underbrace{\theta_\phi}_{\text{intensity}} \cdot \underbrace{\bigl(N_t - \sigma_N G_t\bigr)}_{\hat{N}_t^G}. \label{phi}
+    \end{align}
+\end{itemize}
+
+\underline{Transparency.}
+The government can also choose how transparent it is about its future actions. Before investors submit orders at time \(t\), the government releases a public signal about next period's shock \(G_{t+1}\):
+\begin{align*}
+    g_t = G_{t+1} + \tau^{-1/2} \epsilon_t^G, \qquad \epsilon_t^G \stackrel{\text{i.i.d.}}{\sim} N(0,1).
+\end{align*}
+Higher precision \(\tau\) corresponds to greater transparency. 
+
+\subsection{Solving for equilibrium given govenment policy}
+
+We first take the government policy parameters \((\theta_X, \theta_\phi, \tau)\) as given and solve for the rational‑expectations equilibrium.
+
+\paragraph{Learning from the government's signal.}
+Investors form their expectation of \(G_{t+1}\) using the public signal \(g_t\):
+\begin{align*}
+    \hat{G}_{t+1} &\equiv \mathbb{E}[\,G_{t+1} \mid g_t\,] 
+                  = \frac{\operatorname{Cov}(G_{t+1}, g_t)}{\operatorname{Var}(g_t)} \, g_t 
+                  = \frac{1}{1 + \tau^{-1}} \, g_t .
+\end{align*}
+The residual uncertainties about government shocks one and two periods ahead are
+\begin{align*}
+    \operatorname{Var}_t(G_{t+1}) 
+        &= \operatorname{Var}(G_{t+1}) - \operatorname{Var}(\hat{G}_{t+1}) 
+          = 1 - \frac{1}{1+\tau^{-1}} 
+          = \frac{\tau^{-1}}{1+\tau^{-1}},\\[4pt]
+    \operatorname{Var}_t(\hat{G}_{t+2}) 
+        &= \operatorname{Var}_t\!\left(\frac{1}{1+\tau^{-1}} \, g_{t+1}\right) \\
+        &= \operatorname{Var}_t\!\left(
+              \frac{1}{1+\tau^{-1}} \,
+              \bigl(G_{t+2} + \tau^{-1/2} \epsilon_{t+1}^G\bigr)
+           \right) 
+          = \frac{1}{1+\tau^{-1}} .
+\end{align*}
+
+\paragraph{Price conjecture.}
+We posit a linear equilibrium price of the form
+\begin{align}
+    P_t = \underbrace{\bar{P}}_{\text{risk discount}} 
+          + \underbrace{\frac{1}{R_f - \rho_V} V_{t+1}}_{\text{fundamental}} 
+          + \underbrace{p_G G_t}_{\text{current govt shock}} 
+          + \underbrace{p_{\hat{G}} \hat{G}_{t+1}}_{\text{expected govt shock}} 
+          + \underbrace{p_N N_t}_{\text{noise trading}}. \label{price_conjecture}
+\end{align}
+Intuitively, stronger government intervention reduces the coefficient on noise trading (\(p_N\)) but increases the coefficients on current and expected government shocks (\(p_G\) and \(p_{\hat{G}}\)). 
+
+\paragraph{Conditional moments of returns.}
+Substituting the conjecture into \eqref{excess_return} gives
+\begin{align*}
+    \mathbb{E}_t[R_{t+1}] 
+        &= \mathbb{E}_t[D_{t+1}] + \mathbb{E}_t[P_{t+1}] - R_f P_t \\
+        &= \frac{R_f}{R_f - \rho_V} V_{t+1} + p_G \hat{G}_{t+1} + \bar{P} - R_f P_t, \\[6pt]
+    \operatorname{Var}_t(R_{t+1}) 
+        &= \operatorname{Var}_t\!\bigl(D_{t+1} + P_{t+1}\bigr) \\
+        &= \operatorname{Var}_t\!\Bigl(
+                \sigma_D \epsilon_{t+1}^D 
+                + \frac{1}{R_f - \rho_V} V_{t+2} 
+                + p_G G_{t+1} 
+                + p_{\hat{G}} \hat{G}_{t+2} 
+                + p_N N_{t+1}
+           \Bigr) \\
+        &= \underbrace{\sigma_D^2 
+                + \left(\frac{1}{R_f - \rho_V}\right)^2 \sigma_V^2}_{\text{fundamental risk}}
+           + \underbrace{p_G^2 \frac{\tau^{-1}}{1+\tau^{-1}}}_{\text{policy risk}}
+           + \underbrace{p_{\hat{G}}^2 \frac{1}{1+\tau^{-1}}}_{\text{policy signal risk}}
+           + \underbrace{p_N^2 \sigma_N^2}_{\text{noise trader risk}} .
+           \numberthis \label{var_R}
+\end{align*}
+
+\paragraph{Investor demand and market clearing.}
+Using \eqref{demand_with_phi}, investor demand is
+\[
+X_t^I = \frac{\mathbb{E}_t[R_{t+1}] - \phi_t}
+            {\gamma \operatorname{Var}_t(R_{t+1})}
+      = \frac{1}{\gamma \operatorname{Var}_t(R_{t+1})}
+        \left(
+            \frac{R_f}{R_f - \rho_V} V_{t+1} 
+            + p_G \hat{G}_{t+1} 
+            + \bar{P} 
+            - R_f P_t 
+            - \phi_t
+        \right).
+\]
+Market clearing requires
+\begin{align*}
+    X_t^I + X_t^G + N_t = 1 .
+\end{align*}
+Substituting the expressions for \(X_t^I\) and \(X_t^G\) yields
+\begin{align*}
+    \frac{1}{\gamma \operatorname{Var}_t(R_{t+1})}
+    \left(
+        \frac{R_f}{R_f - \rho_V} V_{t+1} 
+        + p_G \hat{G}_{t+1} 
+        + \bar{P} 
+        - R_f P_t 
+        - \phi_t
+    \right)
+    + (1-\theta_X) N_t 
+    + \theta_X \sigma_N G_t = 1 .
+\end{align*}
+
+\paragraph{Solving for the price.}
+Solving the market‑clearing equation for \(P_t\) gives
+\begin{align}
+    P_t = \frac{1}{R_f}
+          \Bigl\{
+              \gamma \operatorname{Var}_t(R_{t+1})
+                  \bigl[ (1-\theta_X) N_t + \theta_X \sigma_N G_t - 1 \bigr]
+              + \frac{R_f}{R_f - \rho_V} V_{t+1}
+              + p_G \hat{G}_{t+1}
+              + \bar{P}
+              - \phi_t
+          \Bigr\}. \label{price_market_clearing_with_phi}
+\end{align}
+
+\paragraph{Matching coefficients.}
+Comparing \eqref{price_market_clearing_with_phi} with the conjectured form \eqref{price_conjecture} and using \(\phi_t = \theta_\phi (N_t - \sigma_N G_t)\) from \eqref{phi} yields the equilibrium coefficients:
+\begin{align}
+    \bar{P} &= -\,\frac{\gamma \operatorname{Var}_t(R_{t+1})}{R_f - 1}, \label{pbar}\\[4pt]
+    p_G     &= \frac{\bigl[\gamma \operatorname{Var}_t(R_{t+1}) \theta_X + \theta_\phi\bigr] \sigma_N}{R_f}, \label{pG}\\[4pt]
+    p_{\hat{G}} &= \frac{p_G}{R_f}, \label{pGhat}\\[4pt]
+    p_N     &= \frac{\gamma \operatorname{Var}_t(R_{t+1}) (1-\theta_X) - \theta_\phi}{R_f}. \label{pN}
+\end{align}
+These expressions verify that the linear conjecture \eqref{price_conjecture} indeed constitutes an equilibrium.
+
+
+\paragraph{Discussion of the equilibrium.}
+
+Holding \(\operatorname{Var}_t(R_{t+1})\) fixed, the coefficients in \eqref{pbar}--\eqref{pN} have intuitive interpretations.  
+The constant \(\bar{P}\) is a risk‑based discount.  
+Increasing either direct intervention (\(\theta_X\)) or margin‑based intervention (\(\theta_\phi\)) raises the coefficients on current and expected government shocks (\(p_G\) and \(p_{\hat{G}}\)) while reducing the coefficient on noise trading (\(p_N\)).  
+
+Of course, \(\operatorname{Var}_t(R_{t+1})\) is endogenous.  Inspecting \eqref{var_R} shows that greater transparency (higher \(\tau\)) lowers the conditional variance of returns.\footnote{This follows because \(p_{\hat{G}} = p_G/R_f < p_G\); the reduction in policy risk outweighs the increase in policy‑signal risk.}
+
+\paragraph{Government trading profits.}
+
+Because the government leans against noise traders, as long as it does not over-trade, its trades are profitable on average.  Its expected per‑period trading profit (in excess of the risk‑free rate) is
+\begin{align*}
+    \mathbb{E}[\Pi_{t+1}] &\equiv \mathbb{E}\!\bigl[ X_t^G \cdot R_{t+1} \bigr] 
+                          = \mathbb{E}\!\bigl[ X_t^G \cdot \mathbb{E}_t[R_{t+1}] \bigr] \\
+    &= \mathbb{E}\Bigl\{ X_t^G \cdot 
+        \bigl[ \phi_t + \gamma \operatorname{Var}_t(R_{t+1}) (1 - N_t - X_t^G) \bigr] \Bigr\} \\
+    &= \mathbb{E}\bigl[ X_t^G \phi_t \bigr] 
+       + \gamma \operatorname{Var}_t(R_{t+1}) \,
+         \mathbb{E}\!\bigl[ X_t^G (1 - N_t - X_t^G) \bigr].
+\end{align*}
+Using the policy rules \eqref{govt_demand} and \eqref{phi}, we obtain
+\begin{align}
+    \mathbb{E}[\Pi_{t+1}] 
+    &= - \underbrace{2\theta_X\theta_\phi\sigma_N^2}_{\text{policy conflict}}
+       + \underbrace{\gamma \operatorname{Var}_t(R_{t+1}) \,
+                     \theta_X (1-2\theta_X)\,\sigma_N^2}_{\text{trading gains}} .
+    \label{govt_profit}
+\end{align}
+
+The first term reflects a \emph{policy conflict} that arises only when both tools are active.  
+Adjusting the financing cost (\(\theta_\phi > 0\)) diminishes the profitability of the government's own trades.%
+\footnote{For example, when \(N_t<0\) the government buys shares (\(X_t^G>0\)) but also lowers \(\phi_t\), which reduces the expected excess return investors require and thereby lowers the price appreciation the government can capture.}
+
+The second term captures the pure trading gains from leaning against noise traders.  
+It is positive as long as \(\theta_X < 1/2\)—the natural case when the government aims to reduce volatility rather than amplify it.  
+
+Crucially, government profits depend on transparency \(\tau\) through \(\operatorname{Var}_t(R_{t+1})\).  
+Increasing transparency (\(\tau \uparrow\)) lowers \(\operatorname{Var}_t(R_{t+1})\) and therefore reduces trading profits.  
+This is the \emph{front‑running} channel: a more predictable government is partially anticipated by investors, eroding its ability to profit from supplying liquidity against noise.
+
+
+\subsection{Implications for optimal policy}
+
+The analysis reveals a trade‑off between volatility reduction and government budgetary considerations—the latter are not explicitly modeled here.
+
+\begin{itemize}
+    \item \textbf{Transparency.}  
+    For given intervention intensities \((\theta_X,\theta_\phi)\), higher transparency (\(\tau\)) always lowers return volatility.  
+    Within the model, the sole cost of transparency is a reduction in government trading profits.  
+
+    \begin{itemize}
+        \item The front‑running effect arises because the government commits to a \emph{quantity‑based} intervention rule. If instead the government could credibly announce a \emph{price‑based} target (e.g., ``I will keep the price above a certain level''), market participants might move the price to that level without the government needing to trade at all.
+    \end{itemize}
+
+    \item \textbf{Direct trading versus margin policy.}  
+    From a pure volatility‑reduction standpoint, the two tools are quite similar.  
+    For any given direct‑trading intensity \(\theta_X\), there exists a margin‑policy intensity \(\theta_\phi\) that produces the same equilibrium coefficients \(p_G, p_N\) and hence the same price impact on noise trading.\footnote{This exact substitutability is a consequence of the linear‑Gaussian structure and may not generalize to richer settings.}
+
+    \begin{itemize}
+        \item The key practical distinction likely lies in \emph{implementation costs}.  
+    Direct trading exposes the government’s balance sheet to market risk and requires substantial liquidity.  
+    Adjusting margin requirements, in contrast, involves minimal fiscal outlay and no direct market position.  
+    If the government faces risk or position limits, it would naturally prefer to induce private investors to absorb shocks rather than doing so itself.
+    \end{itemize}
+\end{itemize}
+
+\subsection{J - thoughts about step-by-step extensions}
+
+1) Perhaps just add a ``risk aversion'', interpreted as ``ammo'', to the NT. And see what happens. 
+
+2) Is there any sense in which we should model the NT as optimizing over longer horizons? 
+
+\newpage
+
+\section{Trying to incorporate forward guidance}
+
+This approach is great, except that, unless $\rho > 1$, there is no real ``front-running'', as the expected trades of NT are still negatively correlated. 
+
+\subsection{High-level discussion}
+In the previous set up, forward guidance (FG) is useless. I want a setting where it is useful, but also with the drawback that FG invites front-running so that NT loses some money. 
+
+There are a few ways to think about FG. 
+
+\begin{itemize}
+    \item Odyssean (e.g. Eggertsson Woodford): FG thought of as NT publicly committing to a dynamically optimal rule, rather than reoptimizing each period. 
+    \begin{itemize}
+        \item For this to work, it has to be that NT has time-inconsistency: an incentive to reverse its position once investors are tricked into believing it will have a persistent position. 
+    \end{itemize}
+
+    \item Delphic (e.g. Campbell et al): liquidity shock can be persistent or transitory, and NT has superior info on how transitory it is. If NT announces ``it is persistent, so we intend to intervene for a while'', this is release of a bad news, but at the same time, if the degree of intervention more than offsets the bad news (which I'm uncertain about), it could have been good news. 
+    \begin{itemize}
+        \item Feels like bit of a stretch. 
+    \end{itemize}
+
+    \item Communication about policy function to aid investor learning (e.g. Eusepi–Preston (2010)). This gets complicated because we need to allow investors to learn NT's policy function, and compare the case with vs without FG. My feeling is this is going to massively complicate the model, causing other aspects to be too difficult to analyze. 
+\end{itemize}
+
+It seems to me that avenue 1 is promising. It seems that NT's profit concerns, or inventory costs, both can lead to time consistency problems? (It seems that the latter works better; the former only works if NT needs to have positive ``flow'' buying in each period. 
+
+\subsection{Trying a bare bones model (two periods)}
+
+\paragraph{Setup}
+There are two periods, $t=0,1,2$. Trading happens at 0 and 1. Payoffs realize at time 2.
+
+There is an asset whose fundamental value is normalized to 0. The price is determined by:
+\begin{align}
+    P_t &= -\lambda (N_t - X_t) + \beta E_t[P_{t+1}]
+\end{align}
+
+\noindent where $\lambda > 0$ captures investors' risk-bearing capacity (endogenize later). Noise trading is persistent: $N_1 = \rho N_0 + \epsilon_1$ (where $\epsilon_1$ is mean-zero shock).
+
+The National Team (NT) minimizes the intertemporal loss function:
+\begin{align}
+    \mathcal{L}_0 &= E_0 \left[ (P_0^2 + c X_0^2) + \beta (P_1^2 + c X_1^2) \right]
+\end{align}
+
+\noindent where the $P_t^2$ term captures excess volatility and $X_t^2$ captures risk/fiscal burden aversion. (Later we may also introduce a concern about expected profits.)
+
+\paragraph{Benchmark: Discretion (Time Consistent)}
+At $t=1$, the NT takes expectations and past prices as given. It solves the static problem:
+\begin{align}
+    \min_{X_1} \quad P_1^2 + c X_1^2 \quad \text{s.t.} \quad P_1 = -\lambda (N_1 - X_1)
+\end{align}
+The first-order condition yields the \textbf{Discretionary Rule}:
+\begin{align}
+    X_1^{Disc} &= \frac{\lambda^2}{\lambda^2 + c} N_1 \equiv \delta_{Disc} N_1
+\end{align}
+where $\delta_{Disc} \in (0,1)$. The resulting price and loss at $t=1$ are:
+\begin{align}
+    P_1^{Disc} &= -\lambda (1 - \delta_{Disc}) N_1
+\end{align}
+
+\paragraph{The Ramsey Problem (Commitment)}
+
+We solve for the optimal commitment $\delta_{Comm}$ that minimizes the National Team's intertemporal loss function.
+
+\underline{The Maximization Problem}
+The planner chooses the future intervention rule $X_1(\delta) = \delta N_1$ at $t=0$ to minimize total expected loss, subject to the rational expectations pricing constraint. We assume $X_0$ is chosen optimally given $\delta$.
+
+\begin{align}
+    \min_{\delta} \quad \mathcal{L} &= \underbrace{(P_0^2 + c X_0^2)}_{\text{Loss at } t=0} + \beta \underbrace{E_0[ P_1(\delta)^2 + c X_1(\delta)^2 ]}_{\text{Loss at } t=1}
+\end{align}
+
+\noindent Constraints:
+\begin{enumerate}
+    \item Future Price: $P_1(\delta) = -\lambda (1-\delta) N_1$
+    \item Current Price (via Expectations):
+    \begin{align}
+        P_0(\delta) &= -\lambda (N_0 - X_0) + \beta \underbrace{E_0[ P_1(\delta) ]}_{-\lambda (1-\delta) \rho N_0}
+    \end{align}
+\end{enumerate}
+
+\underline{First-Order Condition} We differentiate $\mathcal{L}$ with respect to $\delta$. By the \textbf{Envelope Theorem}, since $X_0$ is already optimized to minimize the period-0 loss, we can ignore the indirect effect of $\delta$ on $X_0$ and focus solely on the direct effect on $P_0$.
+
+\begin{align}
+    \frac{d \mathcal{L}}{d \delta} &= \underbrace{\frac{\partial \text{Loss}_0}{\partial P_0} \frac{\partial P_0}{\partial \delta}}_{\text{Marginal Benefit ($t=0$)}} + \underbrace{\beta \frac{d E_0[\text{Loss}_1]}{d \delta}}_{\text{Marginal Cost ($t=1$)}} = 0
+\end{align}
+
+\noindent Term 1: Current Stabilization Benefit. The commitment $\delta$ improves $P_0$ through the expectations channel:
+\begin{align}
+    \frac{\partial P_0}{\partial \delta} &= \frac{\partial}{\partial \delta} \left( -\beta \lambda (1-\delta) \rho N_0 \right) = \beta \lambda \rho N_0
+\end{align}
+Thus, the marginal benefit is:
+\begin{align}
+    \text{MB}_0 &= 2 P_0 \cdot (\beta \lambda \rho N_0)
+\end{align}
+
+\noindent Term 2: Future Distortion Cost. The expected loss at $t=1$ is $E_0 [ (-\lambda(1-\delta)N_1)^2 + c(\delta N_1)^2 ]$.
+\begin{align}
+    \text{MC}_1 &= \beta E_0 [ 2(-\lambda(1-\delta)N_1)(\lambda N_1) + 2c(\delta N_1) N_1 ] \nonumber \\
+    &= \beta (\rho N_0)^2 [ -2\lambda^2(1-\delta) + 2c\delta ]
+\end{align}
+
+Setting $\text{MB}_0 + \text{MC}_1 = 0$:
+\begin{align}
+    2 P_0 \beta \lambda \rho N_0 + \beta (\rho N_0)^2 2 [ -\lambda^2 + (\lambda^2 + c)\delta ] &= 0
+\end{align}
+Dividing by $2 \beta \rho N_0$:
+\begin{align}
+    \lambda P_0 + \rho N_0 [ -\lambda^2 + (\lambda^2 + c)\delta ] &= 0
+\end{align}
+Rearranging to isolate $\delta$:
+\begin{align}
+    (\lambda^2 + c) \delta &= \lambda^2 - \frac{\lambda P_0}{\rho N_0} \\
+    \Rightarrow 
+    \delta_{Comm} &= \underbrace{\frac{\lambda^2}{\lambda^2 + c}}_{\delta_{Disc}} + \underbrace{\left( \frac{-\lambda P_0}{\rho N_0 (\lambda^2 + c)} \right)}_{\text{Forward Guidance Correction}}
+\end{align}
+
+\noindent \underline{Interpretation:} when price is very off (e.g. $P_0 < 0$), the term $(-\lambda P_0)$ is positive. The NT optimally promises to \textbf{over-intervene} ($\delta_{Comm} > \delta_{Disc}$) relative to its static preference. 
+
+\paragraph{Full analytical solution}
+To find the solution in primitive variables, we must endogenize $P_0$. In NT's objective, $X_0$ only impacts the immediate cost term, implying $X_0 = -\frac{\lambda}{c} P_0$. Substituting this into the pricing equation yields the equilibrium price ratio:
+\begin{align}
+    \frac{P_0}{N_0} &= - \frac{c \lambda}{\lambda^2 + c} \left[ 1 + \beta \rho (1-\delta) \right]
+\end{align}
+Substituting this ratio back into the Ramsey condition derived above and solving for $\delta$ yields the explicit solution:
+
+\begin{align}
+    \delta_{Comm} & = \frac{\lambda^2 \left[ (\lambda^2 + c) + c\beta + \frac{c}{\rho} \right]}{(\lambda^2 + c)^2 + c \lambda^2 \beta} \\
+    &= \underbrace{\frac{\lambda^2}{\lambda^2 + c}}_{\delta_{Disc}} + \underbrace{\frac{\lambda^2 c}{(\lambda^2 + c) \cdot \mathbb{D}} \left[ c\beta + \frac{\lambda^2 + c}{\rho} \right]}_{\text{Commitment Premium}}
+\end{align}
+
+\noindent where $\mathbb{D}$ is the denominator from the full solution:
+\begin{align}
+    \mathbb{D} &= (\lambda^2 + c)^2 + c \lambda^2 \beta
+\end{align}
+
+The expression is not particular revealing, except that we do have an explicit solution. 
+
+\subsection{The financial cost of credibility?} 
+
+\color{blue}
+
+We evaluate the Expected Trading Profit ($\Pi$) of the National Team (NT). The profit is defined as the mark-to-market gain in each period:
+\begin{align}
+    \Pi &= \underbrace{X_0 (E_0[P_1] - P_0)}_{\text{Period 0 Capital Gain}} + \underbrace{X_1 (P_2 - P_1)}_{\text{Period 1 Capital Gain}}
+\end{align}
+Assuming $P_2 = 0$ (terminal value) and rational expectations:
+
+\paragraph{Period 0 Profit (The "Alpha" Trade)}
+From the pricing equation: $P_0 - \beta E_0[P_1] = -\lambda (N_0 - X_0)$.
+If we assume $\beta \approx 1$ for simplicity, the expected price appreciation is directly proportional to the Net Supply absorbed:
+\begin{align}
+    E_0[P_1] - P_0 \approx \lambda (N_0 - X_0)
+\end{align}
+Thus, Period 0 Profit is:
+\begin{align}
+    \Pi_0 \approx \lambda X_0 (N_0 - X_0)
+\end{align}
+
+\begin{itemize}
+    \item \textbf{Discretion (High Profit):} The price $P_0$ crashes deeply. The NT responds with a large intervention $X_0$ at a depressed price. Because the "Net Supply" $(N_0 - X_0)$ remains significant (partial absorption), the \textit{rebound spread} $(E_0[P_1] - P_0)$ is large.
+    \item \textbf{Commitment (Low Profit):} Investors front-run the news. $P_0$ stays close to $E_0[P_1]$. The price gap is compressed. Consequently, the NT buys $X_0$ at a price that leaves little room for capital gains.
+\end{itemize}
+
+\paragraph{Period 1 Profit (The "Carry" Trade)}
+The Period 1 profit comes from holding $X_1$ until maturity ($P_2=0$):
+\begin{align}
+    \Pi_1 &= X_1 (0 - P_1) = - X_1 P_1
+\end{align}
+Substituting $X_1 = \delta N_1$ and $P_1 = -\lambda (1-\delta) N_1$:
+\begin{align}
+    \Pi_1 &= (\delta N_1) \cdot \lambda (1-\delta) N_1 = \lambda N_1^2 \cdot \delta(1-\delta)
+\end{align}
+This profit is a parabolic function of $\delta$ that peaks at $\delta = 0.5$.
+\begin{itemize}
+    \item Typically, stabilizing interventions imply $\delta$ is large (close to 1).
+    \item If the NT moves from Discretion (e.g., $\delta \approx 0.5$) to Commitment (e.g., $\delta \approx 0.8$), it moves further down the right side of the Laffer curve.
+    \item By over-intervening, the NT drives $P_1$ so close to 0 that it eliminates its own profit margin on the trade.
+\end{itemize}
+
+\paragraph{Conclusion}
+\begin{align}
+    E_0[\Pi_{Comm}] < E_0[\Pi_{Disc}]
+\end{align}
+The pure financial profit confirms the "Transfer" intuition:
+\begin{enumerate}
+    \item \textbf{Period 0:} Front-running eliminates the "Fire Sale" discount, destroying the NT's alpha.
+    \item \textbf{Period 1:} Over-intervention compresses the yield spread $\delta(1-\delta)$, reducing the return on inventory.
+\end{enumerate}
+The National Team acts as a \textbf{non-profit stabilizer}, effectively subsidizing private arbitrageurs to keep prices smooth.
+\color{black}
+
+\newpage
+\section{Modification - endogenize govt behavior}
+\textcolor{red}{Conclusion: because $N_t$ and $G_t$ are not correlated over time, ``forward guidance'' is useless in this case.}
+
+I am going to use ``Cochrane time notation'' where subscript 0 means $t$ and 1 means $t+1$. I will allow govt noise to be different from noise trader volatility. I also want to endogenize govt objective --- because after all we are most interested in their behavior. 
+
+\subsection{Set up}
+Risky asset fundamentals given by:
+\begin{align*}
+    D_0 & = V_0 + \sigma_D \epsilon_0^D \\
+    V_1 & = \rho_V V_0 + \sigma_V \epsilon_1^V
+\end{align*}
+
+Riskless asset has exogenous gross return $R_f > 1$. In each period there is i.i.d. noise trading of $N_0 = \sigma_N \epsilon_0^N$. 
+
+We have a continuum of CARA agents with risk aversion $\gamma$ and face financing cost $\phi_0$, set by the NT. Before submitting demand at time 0, they observe:
+\begin{align*}
+    \mathcal{F}_0^I & = \{V_{s+1},D_s,P_s,\phi_s\}_{s \le 0}
+\end{align*}
+
+In each period, the NT trades $X_0^G$ and sets $\phi_0$ in each period. They also observe a noise signal of:
+\begin{align*}
+    \hat{N}_0^G & = N_0 - \sigma_G G_0
+\end{align*}
+
+which follows the BSX notation but allows $\sigma_G \ne \sigma_N$. Intuitively, if NT underestimates noise trading ($G_0 > 0$), it would buy more than it should. 
+
+$\mathcal{F}_0^G$ is the same as $\mathcal{F}_0^I$ except we swap $V_1$ with $\hat{N}_0$. We are going to make strong enough assumptions such that investors know $N_0$, while NT knows only a noisy version.\footnote{Specifically, $G_0$ is released when trading at time 0, and thus investors can infer $N_0$ from $P_0$.} 
+
+At the outset, NT choose transparency $\tau \ge 0$. In each period, before trading at time 0, investors get this signal
+\begin{align*}
+    g_0 & = G_1 + \tau^{-1/2} \cdot \epsilon_0^g
+\end{align*}
+
+\noindent which informs them about future NT intervention intention. To make solutions simple, we assume this signal is only released to investors but not to NT. 
+
+Finally, the key new thing is that government has an objective function:
+\begin{align}
+    \max_{X_0^G, \phi_0} & ~ - \underbrace{E_0^G[(P_0 - P_0^e)^2]}_\text{excess volatility} + \underbrace{\lambda \cdot E_0^G(X_0^G \cdot (R_1 - \mu_R))}_\text{NT excess profit} \label{new:nt_objective}
+\end{align}
+
+\noindent where $P_0^e$ is an ``efficient price'' which needs to be defined, and where $\mu_R = \lambda \sigma_R^2$ is the steady-state risk premium in the efficient case. $\lambda > 0$ means that NT also cares about making money (or not losing money). 
+
+To make life simple, we are going to make an assumption that noise trading and NT actions do not change investors' perceived return variance, and we always have $Var_0(R_1) = \sigma_R^2$. This is to fix the average risk premium. 
+
+\subsection{Deriving the ``efficient price''}
+
+It is easy to verify that, if there is not noise trading or NT intervention, the efficient price is given by:\footnote{
+Let's assume efficient price is affine:
+\begin{align*}
+    P_0^e & = a + b \cdot V_1
+\end{align*}
+
+To get pricing coefficients, go through market clearing:
+\begin{align*}
+    X_0^I& = 1 \\
+    \frac{E_0(P_1 + D_1) - R_f P_0}{\gamma \sigma_R^2} & = 1 \\
+    \Rightarrow P_0 & = \frac{1}{R_f} \left[E_0(P_1 + D_1) - \gamma \sigma_R^2 \right] \\
+    & = \frac{1}{R_f} \cdot \left[a + b \rho_V V_1 + V_1 - \gamma \sigma_R^2 \right] \\
+    & = \underbrace{\frac{a-\gamma \sigma_R^2}{R_f}}_{=a} + \underbrace{\frac{(1+b \rho_V)}{R_f}}_{=b} V_1
+\end{align*}
+
+Solving above yields the familiar coefficients:
+\begin{align*}
+P_0^e & = \underbrace{- \frac{\gamma \sigma_R^2}{R_f - 1}}_{=a} + \underbrace{\frac{1}{R_f - \rho_V}}_{=b} V_1
+\end{align*}
+}
+\begin{align*}
+    P_0^e & = \underbrace{-\frac{\gamma \sigma_R^2}{R_f - 1}}_{=\bar{P}} + \frac{1}{R_f - \rho_V} V_1
+\end{align*}
+
+NT's goal is to reduce deviations from this efficient price. 
+
+\subsection{Solve for equilibrium given NT actions}
+
+We first conjecture NT behavior:
+\begin{align}
+    X_0^G & = - \theta_X \hat{N}_0^G \label{new:x_g_conjecture}\\
+    \phi_0 & = \theta_\phi \hat{N}_0^G \label{new:phi_conjecture}
+\end{align}
+
+\noindent where $\theta_X, \theta_\phi$ represent the strength at which NT leans against noise trading using its policy tools. We also fix the disclosure transparency $\tau$. 
+
+\paragraph{Forecasting next-period NT behavior.} Investors form expectations about $G_1$ using signal $g_0$:
+\begin{align*}
+    \hat{G}_1 & \equiv E_0^I(G_1) \\
+    & = E(G_1 | g_0) = \frac{Cov(G_1, g_0)}{Var(g_0)} g_0 = \frac{1}{1+\tau^{-1}} g_0
+\end{align*}
+
+The residual variance is:
+\begin{align*}
+    Var_0(G_1) & = Var(G_1) - Var(\hat{G}_1) \\
+    & = 1 - \left(\frac{1}{1+\tau^{-1}} \right)^2 Var(g_0) \\
+    & = 1 - \left(\frac{1}{1+\tau^{-1}} \right)^2 Var(G_1 + \tau^{-1/2} \epsilon_0^g) \\
+    & = 1 - \frac{1}{1+\tau^{-1}} = \frac{1}{1+\tau} \numberthis \label{new:var_G1}
+\end{align*}
+
+\paragraph{Solving for equilibrium}
+
+Let's solve for investor behavior. Let's first conjecture the equilibrium price:
+\begin{align}
+    P_0 & = \underbrace{\bar{P} + \frac{1}{R_f - \rho_V} V_1}_{\text{efficient price, } = P_0^e} + \underbrace{p_G G_0}_\text{current NT} + \underbrace{p_{\hat{G}} \hat{G}_1}_\text{forward guidance} + \underbrace{p_N N_0}_\text{noise trading} \label{new:price_conjecture}
+\end{align}
+
+Let's derive expected return under investor's information set:\footnote{We have assumed that $Var_0^I(R_1) = \sigma_R^2$ is a constant.}
+\begin{align*}
+    E_0^I(R_1) & = E_0^I(D_1) + E_0^I(P_1) - R_f P_0 \\
+    & = \bar{P} + \frac{R_f}{R_f - \rho_V} V_1 + p_G \hat{G}_1 - R_f P_0
+\end{align*}
+
+\noindent where $\hat{G}_1 = E_0^I(G_1) = E(G_1 | g_0)$ represent investors' best guess of next-period govt intervention. Then, market clearing is given by:
+\begin{align*}
+    X_0^I + X_0^G + N_0 & = 1 \\
+    \frac{1}{\gamma \sigma_R^2} \left[\bar{P} + \frac{R_f}{R_f - \rho_V} V_1 + p_G \hat{G}_1 - R_f P_0 - \phi_0 \right] - \theta_X \hat{N}^G_0 + N_0 & = 1 \\
+    \frac{1}{\gamma \sigma_R^2} \left[\bar{P} + \frac{R_f}{R_f - \rho_V} V_1 + p_G \hat{G}_1 - R_f P_0 - \theta_\phi \cdot (N_0 - \sigma_G G_0) \right] - \theta_X (N_0 - \sigma_G G_0) + N_0 & = 1
+\end{align*}
+
+Rearranging terms yields:
+\begin{align*}
+    P_0 & = \frac{\bar{P} - \gamma \sigma_R^2}{R_f} + \frac{1}{R_f - \rho_V} V_1 + \frac{\theta_\phi \sigma_G + \gamma \sigma_R^2 \theta_X \sigma_G}{R_f} G_0 + \frac{p_G}{R_f} \hat{G}_1 + \frac{\gamma \sigma_R^2 (1-\theta_X) - \theta_\phi}{R_f} N_0
+\end{align*}
+
+\noindent which verifies the functional form in \eqref{new:price_conjecture}. We can solve for the pricing coefficients:
+\begin{align*}
+    \bar{P} & = - \frac{\gamma \sigma_R^2}{R_f - 1} \\
+    p_G & = \frac{\sigma_G}{R_f} \theta \\
+    p_{\hat{G}} & = \frac{\sigma_G}{R_f^2} \theta \\
+    p_N & = \frac{\gamma \sigma_R^2 - \theta}{R_f}
+\end{align*}
+
+\noindent where $\theta \equiv \theta_\phi + \gamma \sigma_R^2 \theta_X$ (overall degree to intervention). 
+
+We can interpret the coefficients. The degree to which NT noise impact prices ($p_G$) depends on both the variation in NT signal noise ($\sigma_G$) and degree of intervention $\theta$. $p_{\hat{G}}$ is similar to $p_G$ and just slightly smaller (by a multiple of $\frac{1}{R_f}$) due to discounting. As for $p_N$, note that it is decreasing in $\theta$ for moderate values of $\theta$. 
+
+\textbf{Remark.} From a pure ``price impact'' perspective, $\theta = \theta_\phi + \gamma \sigma_R^2 \theta_X$ is the ``sufficient statistic'' of govt intervention. Without more assumptions, this leads to an ``indeterminancy'' of interventions --- NT can achieve the same goals either by direct trading ($\theta_X$) or altering financing ($\theta_\phi$). We later will need something to break the indeterminancy. 
+
+\subsection{Consequence on excess volatility}
+
+Let's evaluate the consequences of NT intervention and see if we can find an objective function to rationalize NT strategy. Note that the mispricing is given by:
+\begin{align*}
+    P_0 - P_0^e & = p_G G_0 + p_{\hat{G}} \hat{G}_1 + p_N N_0 \\
+    & = \frac{\theta \sigma_G}{R_f} G_0 + \frac{\theta \sigma_G}{R_f^2} \hat{G}_1 + \frac{\gamma \sigma_R^2 - \theta}{R_f} N_0
+\end{align*}
+
+It is natural to assume that NT would like to reduce the variation in this:\footnote{A consequence of this is, fixing everything else, lower transparency ($\tau$) is better. this is because the way transparency works is it gives investors a ``pre-signal'' of $G_1$, which gets incorporated into price earlier, leading to more pricing at time 0.}
+\begin{align*}
+    E(P_0 - P_0^e)^2 & = Var(P_0 - P_0^e) \\
+    & = \underbrace{\frac{\theta^2 \sigma_G^2}{R_f^2} + \frac{\theta^2 \sigma_G^2}{R_f^4} \cdot \frac{\tau}{1+\tau}}_\text{injecting more noise} + \underbrace{\frac{(\gamma \sigma_R^2 - \theta)^2}{R_f^2} \sigma_N^2}_\text{leaning against noise}
+\end{align*}
+
+The expression is intuitive. Relative to a state of no intervention ($\theta = 0$), increasing $\theta$ a bit reduces the noise term, but also injects more nose, and the degree of noise injection depends positively on $\sigma_G^2$ (NT's signal noise). 
+
+The expression above is strictly convex so FOC suffices for optimality:
+\begin{align*}
+    \theta^* & = \frac{\gamma \sigma_R^2}{1 + \left(1 + \frac{1}{R_f^2} \cdot \frac{\tau}{1+\tau} \right) \frac{\sigma_G^2}{\sigma_N^2}}
+\end{align*}
+
+Intuitively, more intervention is called for if $\gamma \sigma_R^2$ (risk premium of investors) is high, or if $\sigma_N$ is high, or if $\sigma_G$ is low. 
+
+\subsection{Consequence on NT profitability}
+The other thing we have to consider is NT's own trading performance. It incurs return volatility and also have expected returns. 
+
+The more interesting part is the expected profit. Intuitively, NT makes money because it trades against noise traders, but it loses money due to being front-run by investors. Let's note that the one-period ``alpha'' is given by:
+\begin{align*}
+    \Pi_1 & \equiv X_0^G \cdot (R_1 - \lambda \sigma_R^2)
+\end{align*}
+
+To compute its expected value, recall that NT trade depends on $N_0$ and $G_0$:
+\begin{align*}
+    X_0^G & = - \theta_X \hat{N}_0^G \\
+    & = - \theta_X \cdot (N_0 - \sigma_G G_0)
+\end{align*}
+
+\noindent and that alpha is given by:
+\begin{align*}
+    R_1 - \lambda \sigma_R^2 & = D_1 + P_1 - R_f P_0 - \lambda \sigma_R^2 \\
+    & = E(R_1 - \lambda \sigma_R^2) - R_f \cdot (p_G G_0 + p_N N_0) + (\text{terms unrelated to } N_0, G_0)
+\end{align*}
+
+Therefore, expected profit is given by:
+\begin{align*}
+E(\Pi_1) & \stackrel{E(X_0^G) = 0}{=} Cov(X_0^G, R_1) \\
+& = R_f \theta_X (p_N \sigma_N^2 - \sigma_G p_G) \\
+& = \theta_X \cdot [\gamma \sigma_R^2 \sigma_N^2 - \theta (\sigma_N^2 + \sigma_G^2)] \\
+& \stackrel{\theta = \gamma \sigma_R^2 \theta_X + \theta_\phi}{=} (\sigma_N^2 + \sigma_G^2) \theta_X \cdot \left[ \underbrace{\frac{\sigma_N^2}{\sigma_N^2 + \sigma_G^2} \gamma \sigma_R^2}_\text{max profit} - \underbrace{\gamma \sigma_R^2 \theta_X}_\text{price impact}  - \underbrace{\theta_\phi}_\text{policy crowd out} \right]
+\end{align*}
+
+If NT wants to optimize this, it would choose $\theta_\phi = 0$ (no crowding out), and the optimal intervention, from FOC, would be:
+\begin{align*}
+    \theta_X^* & = \frac{\sigma_N^2}{2 (\sigma_N^2 + \sigma_G^2)}
+\end{align*}
+
+\noindent which is rather intuitive. The $1/2$ term arises from the monopolist problem. The intervention, of course, negatively depend on NT noise $\sigma_G$. 
+
+
+\textcolor{blue}{Under this formulation, disclosure does not harm NT profitability. This is because $G_0$ and $G_1$ are independent. }
+
+
+
+\newpage
+\section{New thoughts -- assuming objective is reducing volatility}
+
+There is a huge literature on central banks that touch on optimal intervention, degree of opacity, and credibility issues that we can build on. They often have some inflation target, and central bank tweaks interest rate or money supply to hit that target. 
+
+How are things different here? A few things:
+\begin{itemize}
+    \item CB's objective is to reduce deviation of inflation from an \textit{observable} target (e.g. 2\%). 
+    \begin{itemize}
+        \item In contrast, NT (national team) wants to reduce price deviation from ``fundamentals'' --- a target that is not seen, and arguably some investors know more about. Here, we have to take seriously the idea that NT has a rather noisy signal of the ``right target''. 
+        \item To the extent that prices eventually tend towards fundamentals, NT cannot distort prices forever. In a sense, all intervention are ``temporary'' in nature. 
+    \end{itemize}
+
+    \item NT and CB both have ``credibility'' issues, but for different reasons. In CB, people are concerned about time-inconsistency (Kydland \& Prescott (1977) and Barro \& Gordon (1983)). Or, less importantly, as in Backus \& Driffill (1985), CB has incentive to ``pretend to be more serious than it is'' to make its intervention more potent. 
+    \begin{itemize}
+        \item For NT, it is more about ``does the NT have enough amo'', while CB is often assumed to have infinite amo. 
+        \item Of course, the Backus \& Driffill (1985) thing can still apply. 
+    \end{itemize}
+\end{itemize}
+
+Some smaller issues:
+\begin{itemize}
+    \item NT may have a conflict of interest --- it does not just care about prices being close to fundamentals. It might just want prices to have a high level, and also to reduce crashes (but care less about bubbles). 
+\end{itemize}
+
+\subsection{New sketch?}
+
+Just occurred to me: perhaps the govt would like to have a dynamic plan? I can start with static, of course. 
+
+TODO: the longer-term demand thing, what is a more appropriate model? Funding/intermediary? It might also be good to just list out the various things that can be tweaked. (Will Cong discussion)
+
+\clearpage
+\bibliographystyle{rfs}
+\bibliography{refs}
+
+\processdelayedfloats
+
+\newpage
+\appendix
+
+    
+ % Resetting for the actual figures and tables
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\renewcommand{\thetable}{\Alph{section}\arabic{table}}
+\renewcommand{\thefigure}{\Alph{section}\arabic{figure}}
+
+% \section{Additional Results}
+% \label{app:additional}
+
+
+\processdelayedfloats
+
+\end{document}
